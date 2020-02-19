@@ -93,7 +93,8 @@ exports.verifyToken = function (id_token, jwtPayload, setup) {
 		jwt.verify(id_token, jwk2pem(JSON.parse(res.getBody('UTF-8')).keys[0]));
 		jwtPayload.verified = true;
 		console.log('JWT verified ' + jwtPayload.verified);
-		redisUtil.redisSave('jwtPayload', jwtPayload);
+		console.log(jwtPayload, "LTI")
+		// redisUtil.redisSave('jwtPayload', jwtPayload);
 	} catch (err) {
 		console.log('Verify Error - verify failed: ' + err);
 		jwtPayload.verified = false;

@@ -240,6 +240,7 @@ module.exports = function (app) {
       sameSite: 'none',
       secure: true
     });
+    // res.cookie("jwt", jwt)
     res.redirect("/lti_adv_view");
   });
 
@@ -256,10 +257,7 @@ module.exports = function (app) {
   });
 
   app.get("/jwtPayloadData", (req, res) => {
-    redisUtil.redisGet('jwtPayload').then(jwtPayload => {
-       res.send(jwtPayload);
-    });
-    
+       res.send(jwtPayload);  
   });
 
   app.get("/login", (req, res) => {
