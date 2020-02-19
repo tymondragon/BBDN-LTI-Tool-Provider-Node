@@ -24,7 +24,7 @@ class LtiAdvView extends React.Component {
           groups: jwtPayload.groups
         });
       });
-    console.log(this.state.body);
+    console.log(this.state);
   }
 
   render() {
