@@ -256,7 +256,10 @@ module.exports = function (app) {
   });
 
   app.get("/jwtPayloadData", (req, res) => {
-    res.send(jwtPayload);
+    redisUtil.redisGet('jwtPayload').then(jwtPayload => {
+       res.send(jwtPayload);
+    });
+    
   });
 
   app.get("/login", (req, res) => {

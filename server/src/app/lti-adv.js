@@ -6,6 +6,7 @@ let crypto = require('crypto');
 let request = require('request');
 let uuid = require('uuid');
 let jwk2pem = require('pem-jwk').jwk2pem;
+import redisUtil from "./redisutil";
 
 exports.toolLaunch = function(req, res, jwtPayload) {
 	let id_token = req.body.id_token;
@@ -74,10 +75,6 @@ exports.verifyToken = function (id_token, jwtPayload, setup) {
 	  clientId +
 	  "/jwks.json";
 
-
-	console.log(url, 'ura url');
-  console.log(id_token, 'id_token');
-  console.log("I am a id token whore")
 	// Do a synchronous call to dev portal
 	let res;
 	try {
@@ -96,6 +93,7 @@ exports.verifyToken = function (id_token, jwtPayload, setup) {
 		jwt.verify(id_token, jwk2pem(JSON.parse(res.getBody('UTF-8')).keys[0]));
 		jwtPayload.verified = true;
 		console.log('JWT verified ' + jwtPayload.verified);
+		redisUtil.redisSave('jwtPayload', jwtPayload);
 	} catch (err) {
 		console.log('Verify Error - verify failed: ' + err);
 		jwtPayload.verified = false;
