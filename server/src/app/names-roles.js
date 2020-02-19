@@ -38,7 +38,7 @@ exports.namesRoles = (req, res, nrPayload, setup) => {
 
       request(options, function(err, response, body) {
         let json = JSON.parse(body);
-
+        
         if (err) {
           console.log("Names and Roles Error - request failed: " + err.message);
         } else if (response.statusCode !== 200) {

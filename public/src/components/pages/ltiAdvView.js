@@ -24,10 +24,12 @@ class LtiAdvView extends React.Component {
           groups: jwtPayload.groups
         });
       });
+    console.log(this.state.body);
   }
 
   render() {
     const body = JSON.stringify(this.state.body);
+    
     const verified = this.state.verified ? (
       <Typography variant="body1" style={styles.passed}>
         Verified

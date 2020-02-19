@@ -9,6 +9,7 @@ import config from "./config/config.js";
 const app = express();
 const httpProxy = express();
 let redisUtil = require("./app/redisutil");
+require('dotenv').config();
 
 const options = config.use_ssl
   ? {

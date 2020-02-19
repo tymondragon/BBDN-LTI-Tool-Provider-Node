@@ -1,17 +1,29 @@
 import path from "path";
 import cookieParser from "cookie-parser";
-import {AGPayload, ContentItem, JWTPayload, NRPayload, GroupsPayload, SetupParameters} from "../common/restTypes";
+import {
+  AGPayload,
+  ContentItem,
+  JWTPayload,
+  NRPayload,
+  GroupsPayload,
+  SetupParameters
+} from "../common/restTypes";
 import config from "../config/config";
 import assignGrades from "./assign-grades";
 import * as content_item from "./content-item";
 import eventstore from './eventstore';
-import {deepLink, deepLinkContent} from "./deep-linking";
+import {
+  deepLink,
+  deepLinkContent
+} from "./deep-linking";
 import * as lti from "./lti";
 import ltiAdv from "./lti-adv";
 import namesRoles from "./names-roles";
 import groups from "./groups";
 import redisUtil from "./redisutil";
-
+const fs = require('fs')
+const blackboard = require('../../../blackboardsetup.json');
+const strKey = fs.readFileSync('/Users/tymondragon/indigo/BBDN-LTI-Tool-Provider-Node/toolprivatekey.pem', 'ascii')
 let jwk2pem = require('pem-jwk').jwk2pem
 
 const contentitem_key = "contentItemData";
@@ -39,7 +51,7 @@ const PUBLIC_KEY_SET = "{\n" +
   "  ]\n" +
   "}";
 
-module.exports = function(app) {
+module.exports = function (app) {
   app.use(cookieParser());
 
   let provider =
@@ -49,27 +61,29 @@ module.exports = function(app) {
   let contentItemData = new ContentItem();
   let ciLoaded = false;
   let privateKey = jwk2pem(JSON.parse(FULL_KEYS));
-
   //=======================================================
   let setupLoaded = false;
   let setup = new SetupParameters();
-  let setup_key = "setupParameters";
-
-  if (!setupLoaded) {
-    redisUtil.redisGet(setup_key).then(setupData => {
-      if (setupData !== null) {
-        setup = setupData;
-
-        if (setup.privateKey === "") {
-          // use our generated one that goes with our generated public key and jwks URL
-          setup.privateKey = privateKey;
-          console.log("Using generated private key...");
-        }
-
-        setupLoaded = true;
-      }
-    });
+  // let setup_key = "setupParameters";
+  setup = {
+    ...blackboard,
+    privateKey: strKey
   }
+  // if (!setupLoaded) {
+  //   redisUtil.redisGet(setup_key).then(setupData => {
+  //     if (setupData !== null) {
+  //       setup = setupData;
+
+  //       if (setup.privateKey === "") {
+  //         // use our generated one that goes with our generated public key and jwks URL
+  //         setup.privateKey = privateKey;
+  //         console.log("Using generated private key...");
+  //       }
+
+  //       setupLoaded = true;
+  //     }
+  //   });
+  // }
 
   //=======================================================
   // LTI 1 provider and caliper stuff
@@ -183,16 +197,21 @@ module.exports = function(app) {
   // LTI Advantage Message processing
   let jwtPayload;
   let users = {
-    name : "Fyodor",
-    age : "77"
+    name: "Fyodor",
+    age: "77"
   };
 
   app.post("/lti13", (req, res) => {
     console.log("--------------------\nltiAdvantage");
+    // console.log(req.params)
     jwtPayload = new JWTPayload();
+    // console.log(jwtPayload)
     ltiAdv.verifyToken(req.body.id_token, jwtPayload, setup);
     res.cookie("userData-legacy", users);
-    res.cookie("userData", users,  { sameSite: 'none', secure: true });
+    res.cookie("userData", users, {
+      sameSite: 'none',
+      secure: true
+    });
     res.redirect("/lti_adv_view");
   });
 
@@ -201,7 +220,10 @@ module.exports = function(app) {
     jwtPayload = new JWTPayload();
     ltiAdv.verifyToken(req.body.id_token, jwtPayload, setup);
     res.cookie("userData-legacy", users);
-    res.cookie("userData", users,  { sameSite: 'none', secure: true });
+    res.cookie("userData", users, {
+      sameSite: 'none',
+      secure: true
+    });
     res.redirect("/lti_adv_view");
   });
 
@@ -383,13 +405,16 @@ module.exports = function(app) {
   });
 
   app.post("/saveSetup", (req, res) => {
-    setup.privateKey = req.body.privateKey;
-    setup.tokenEndPoint = req.body.tokenEndPoint;
-    setup.oidcAuthUrl = req.body.oidcAuthUrl;
-    setup.issuer = req.body.issuer;
-    setup.applicationId = req.body.applicationId;
-    setup.devPortalHost = req.body.devPortalHost;
-    redisUtil.redisSave(setup_key, setup);
+    console.log(process.env.TOOL, "ENV VALUE")
+    console.log(setup, "before")
+    // setup.privateKey = req.body.privateKey;
+    // setup.tokenEndPoint = req.body.tokenEndPoint;
+    // setup.oidcAuthUrl = req.body.oidcAuthUrl;
+    // setup.issuer = req.body.issuer;
+    // setup.applicationId = req.body.applicationId;
+    // setup.devPortalHost = req.body.devPortalHost;
+    console.log(setup, "after")
+    // redisUtil.redisSave(setup_key, setup);
     res.redirect("/setup");
   });
 
@@ -400,7 +425,9 @@ module.exports = function(app) {
     console.log("--------------------\ntestRedis");
 
     redisUtil.redisSave("key", "value");
-    redisUtil.redisGet("key").then( (value) => { console.log("Redis value for key: " + value); });
+    redisUtil.redisGet("key").then((value) => {
+      console.log("Redis value for key: " + value);
+    });
 
     res.send('<html lang=""><body>1</body></html>');
   });

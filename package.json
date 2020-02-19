@@ -3,7 +3,7 @@
   "description": "An LTI Testing Tool",
   "version": "0.0.1",
   "private": true,
-  "main": "server.js",
+  "main": "server/lib/server.js",
   "repository": "https://github.com/blackboard/BBDN-LTI-Tool-Provider-Node",
   "license": "MIT",
   "dependencies": {
@@ -15,17 +15,20 @@
     "body-parser": "^1.18.3",
     "classnames": "^2.2.6",
     "cookie-parser": "^1.4.4",
+    "dotenv": "^8.2.0",
     "express": "^4.17.0",
     "faker": "^4.1.0",
     "finish": "^0.6.3",
     "ims-caliper": "^1.1.0",
     "ims-lti": "^3.0.2",
     "jsonwebtoken": "^8.5.1",
+    "knex": "^0.20.10",
     "lodash": "^4.17.15",
     "moment": "^2.24.0",
     "mongodb": "^2.2.11",
     "oauth-signature": "^1.5.0",
     "pem-jwk": "^2.0.0",
+    "pg": "^7.18.1",
     "prop-types": "^15.7.2",
     "pug": "2.0.3",
     "react": "^16.8.6",
@@ -58,7 +61,7 @@
   "scripts": {
     "build-server": "babel server/src -d server/lib --source-maps",
     "build-public": "webpack --display-error-details",
-    "prestart": "npm install; npm run build-server; npm run build-public",
+    "prestart": "npm run build-server; npm run build-public",
     "start": "node server/lib/server.js"
   }
 }
