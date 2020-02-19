@@ -6,6 +6,8 @@ let request = require("request");
 exports.namesRoles = (req, res, nrPayload, setup) => {
   if (nrPayload.url === "") {
     nrPayload.orig_body = JSON.parse(req.body.body);
+    console.log(req.body)
+    console.log(nrPayload.orig_body)
     let namesRoles =
       nrPayload.orig_body[
         "https://purl.imsglobal.org/spec/lti-nrps/claim/namesroleservice"

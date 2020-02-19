@@ -298,6 +298,7 @@ module.exports = function (app) {
   let nrPayload;
 
   app.post("/namesAndRoles", (req, res) => {
+    console.log(req.body)
     console.log("--------------------\nnamesAndRoles");
     nrPayload = new NRPayload();
     namesRoles.namesRoles(req, res, nrPayload, setup);
