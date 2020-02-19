@@ -14,7 +14,7 @@ exports.toolLaunch = function(req, res, jwtPayload) {
 };
 
 // Pass in JWT and jwtPayload will be populated with results
-exports.verifyToken = function(id_token, jwtPayload, setup) {
+exports.verifyToken = function (id_token, jwtPayload, setup) {
 	let parts = id_token.split('.');
 
 	// Parse and store payload data from launch
@@ -68,13 +68,13 @@ exports.verifyToken = function(id_token, jwtPayload, setup) {
 		clientId = setup.applicationId;
 	}
 
-	// let url =
-	//   setup.devPortalHost +
-	//   "/api/v1/management/applications/" +
-	//   clientId +
-	//   "/jwks.json";
+	let url =
+	  setup.devPortalHost +
+	  "/api/v1/management/applications/" +
+	  clientId +
+	  "/jwks.json";
 
-	let url = 'https://lti-ri.imsglobal.org/platforms/773/platform_keys/795.json';
+
 	console.log(url, 'ura url');
   console.log(id_token, 'id_token');
   console.log("I am a id token whore")
