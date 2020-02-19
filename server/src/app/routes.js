@@ -23,7 +23,7 @@ import groups from "./groups";
 import redisUtil from "./redisutil";
 const fs = require('fs')
 const blackboard = require('../../../blackboardsetup.json');
-const strKey = fs.readFileSync('/Users/tymondragon/indigo/BBDN-LTI-Tool-Provider-Node/toolprivatekey.pem', 'ascii')
+const strKey = fs.readFileSync('/Users/tymondragon/indigo/BBDN-LTI-Tool-Provider-Node/toolprivatekey.txt', 'ascii')
 let jwk2pem = require('pem-jwk').jwk2pem
 
 const contentitem_key = "contentItemData";
