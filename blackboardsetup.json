@@ -1,5 +1,5 @@
 {
-  "applicationId": "dc7c9cbb-5370-492e-a065-dabeb9b49c45",
+  "applicationId": "8359a6d0-24f1-46fc-897b-b6f101e99cb3",
   "issuer": "https://blackboard.com",
   "tokenEndPoint": "https://developer.blackboard.com/api/v1/gateway/oauth2/jwttoken",
   "devPortalHost": "https://developer.blackboard.com",
